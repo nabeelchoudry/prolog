@@ -1,0 +1,41 @@
+
+
+%Nabeel Choudry
+%G00644026
+
+
+
+
+
+member(X,[X|_]).
+member(X,[_|T]):-member(X,T). 
+
+
+subset([],_).
+subset([H|T],B):-member(H,B),subset(T,B).
+
+
+union([],B,B).
+union(A,[],A).
+union([X|A],[X|B],[X|T]):-union(A,B,T).
+union([X|A],[Y|B],[X|T]):- X<Y,union(A,[Y|B],T).
+union([X|A],[Y|B],[Y|T]):- X>Y,union([X|A],B,T).
+
+
+intersection([],_,[]).
+intersection([H|T],B,[H|R]):-member(H,B),intersection(T,B,R).
+intersection([_|T],B,C):-intersection(T,B,C).
+
+
+difference([],_,[]).
+difference([H|T],B,C):-member(H,B),difference(T,B,C).
+difference([H|T],B,[H|R]):-difference(T,B,R).
+
+
+delete(_,[],[]).
+delete(X,[X|T],R):-delete(X,T,R).
+delete(X,[H|T],[H|R]):-delete(X,T,R).
+
+elimdup([],[]).
+elimdup([H|T],[H|R]):-member(H,T),delete(H,T,X),elimdup(X,R).
+elimdup([H|T],[H|R]):-elimdup(T,R).
